@@ -104,8 +104,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     data.people_fully_vaccinated_per_hundred = +data.people_fully_vaccinated_per_hundred;
     data.new_weekly_cases_per_100k = +data.new_weekly_cases_per_100k;
     data.people_fully_vaccinated = +data.people_fully_vaccinated;
-    data.state = data.state;
-    
+        
   });
   console.log(stateData);
 
@@ -145,6 +144,20 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
+  console.log("circlesGroup has: ", circlesGroup)
+    
+   // append initial labels
+  var circleLabelsGroup = chartGroup.selectAll("text")
+  .data(stateData)
+  .enter()
+  .append("text")
+  .attr("x", d => xLinearScale(d[chosenXAxis]))
+  .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
+  .text(d => d.state_code); 
+
+  console.log("circleLabelsGroup has: ", circleLabelsGroup);
+  
+ 
   // // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
