@@ -63,6 +63,17 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;
 }
 
+// function used for updating circle labels group with a transition to
+// new circles
+function renderCircleLabels(circleLabelsGroup, newXScale, chosenXAxis) {
+
+  circleLabelsGroup.transition()
+    .duration(1000)
+    .attr("x", d => newXScale(d[chosenXAxis]));
+
+  return circleLabelsGroup;
+}
+
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
 
@@ -144,21 +155,29 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
-  console.log("circlesGroup has: ", circlesGroup)
+  // console.log("circlesGroup has: ", circlesGroup)
     
-   // append initial labels
-  var circleLabelsGroup = chartGroup.selectAll("text")
-  .data(stateData)
-  .enter()
-  .append("text")
-  .attr("x", d => xLinearScale(d[chosenXAxis]))
-  .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
-  .text(d => d.state_code); 
+  //  // append initial labels
+  // var circleLabelsGroup = chartGroup.selectAll("text")
+  // .data(stateData)
+  // .enter()
+  // .append("text")
+  // .attr("x", d => xLinearScale(d[chosenXAxis]))
+  // .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
+  // .text(d => d.state_code); 
 
-  console.log("circleLabelsGroup has: ", circleLabelsGroup);
+   // append initial labels
+   var circleLabelsGroup = chartGroup.selectAll(".stateText")
+   .data(stateData)
+   .enter()
+   .append("text")
+   .attr("class","stateText")
+   .attr("x", d => xLinearScale(d[chosenXAxis]))
+   .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
+   .text(d => d.state_code); 
+
+ // console.log("circleLabelsGroup has: ", circleLabelsGroup);
   
- 
-  // // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -209,6 +228,9 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
 
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+         // updates circle labels with new x values
+         circleLabelsGroup = renderCircleLabels(circleLabelsGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
