@@ -1,9 +1,9 @@
-// original sizing
+// // original sizing
 // var svgWidth = 960;
 // var svgHeight = 500;
 
-var svgWidth = 1100;
-var svgHeight = 700;
+var svgWidth = 1200;
+var svgHeight = 600;
 
 var margin = {
   top: 20,
@@ -79,7 +79,7 @@ function renderCircleLabels(circleLabelsGroup, newXScale, chosenXAxis) {
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup) {
+function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
 
   var label;
 
@@ -98,6 +98,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     });
 
   circlesGroup.call(toolTip);
+  circleLabelsGroup.call(toolTip);
 
   circlesGroup.on("mouseover", function(data) {
     toolTip.show(data);
@@ -107,7 +108,17 @@ function updateToolTip(chosenXAxis, circlesGroup) {
       toolTip.hide(data);
     });
 
-  return circlesGroup;
+    // return (circlesGroup)
+
+  circleLabelsGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    // onmouseout event
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+  // return (circleLabelsGroup);
 }
 
 // Retrieve data from the CSV file and execute everything below
@@ -209,7 +220,8 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .text("New COVID-19 Cases in last Week (per 100k)");
 
   // // updateToolTip function above csv import
-  var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+  var circlesGroup = updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+ 
 
   // // x axis labels event listener
   labelsGroup.selectAll("text")
@@ -238,6 +250,9 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
+        // updates tooltips with new info
+        circleLabelsGroup = updateToolTip(chosenXAxis, circleLabelsGroup);
 
         // changes classes to change bold text
         if (chosenXAxis === "people_fully_vaccinated") {
