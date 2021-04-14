@@ -13,7 +13,8 @@
 
 .inactive {
   font-weight: lighter;
-  fill: #c9c9c9;
+  fill: #aaa5a5;
+  /* fill: #c9c9c9; */
   transition: fill 0.3s ease-out;
   text-anchor: middle;
 }
@@ -31,7 +32,7 @@
 }
 
 .stateCircle {
-  fill: #89bdd3;
+  fill: #53abd1;
   stroke: #e3e3e3;
 }
 
@@ -40,7 +41,7 @@
   margin: 0;
 }
 
-.d3-tip {
+/* .d3-tip {
   padding: 6px;
   font-size: 12px;
   line-height: 1;
@@ -50,7 +51,7 @@
   text-transform: capitalize;
   background: rgba(0, 0, 0, 0.8);
   border-radius: 4px;
-} 
+}  */
 
 /* Mobile Rules */
 @media screen and (max-width: 530px) {

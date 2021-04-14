@@ -2,8 +2,10 @@
 // var svgWidth = 960;
 // var svgHeight = 500;
 
-var svgWidth = 1200;
-var svgHeight = 600;
+// var svgWidth = 1100;
+// var svgHeight = 600;
+var svgWidth = 1100;
+var svgHeight = 550;
 
 var margin = {
   top: 20,
@@ -84,7 +86,8 @@ function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
   var label;
 
   if (chosenXAxis === "people_fully_vaccinated_per_hundred") {
-    label = "People Vaccinated (per 100)";
+    label = (`People Vaccinated <br> (per 100) <br>`);
+    // label = "People Vaccinated (per 100)";
   }
   else {
     label = "People Vaccinated";
@@ -169,9 +172,9 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("class", "stateCircle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.new_weekly_cases_per_100k))
-    .attr("r", 20)
-    .attr("fill", "pink")
-    .attr("opacity", ".5");
+    .attr("r", 18);
+    // .attr("fill", "pink")
+    // .attr("opacity", ".5");
 
   console.log("circlesGroup has: ", circlesGroup)
    
@@ -183,7 +186,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
    .append("text")
    .attr("class","stateText")
    .attr("x", d => xLinearScale(d[chosenXAxis]))
-   .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
+   .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k) + 4)
    .text(d => d.state_code); 
 
  // console.log("circleLabelsGroup has: ", circleLabelsGroup);
@@ -212,7 +215,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
     .classed("axis-text", true)
-    .text("New COVID-19 Cases in last Week (per 100k)");
+    .text("New COVID-19 Cases this Week (per 100k)");
 
   // // updateToolTip function above csv import
   console.log("circlesGroup right before updateTooltip is executed has: ", circlesGroup);
