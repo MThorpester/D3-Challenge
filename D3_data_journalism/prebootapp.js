@@ -159,7 +159,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
-  // console.log("circlesGroup has: ", circlesGroup)
+   console.log("At initial append circlesGroup has: ", circlesGroup);
     
   //  // append initial labels
   // var circleLabelsGroup = chartGroup.selectAll("text")
@@ -231,6 +231,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
+        console.log("Going into renderCircles function circlesGroup has: ", circlesGroup);
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
          // updates circle labels with new x values

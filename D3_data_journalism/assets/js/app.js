@@ -96,7 +96,8 @@ function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
     .html(function(d) {
       return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
     });
-
+  console.log("circleLabelsGroup before .call(toolTip: ", circleLabelsGroup); 
+  console.log("circlesGroup before .call(toolTip: ", circlesGroup);  
   circlesGroup.call(toolTip);
   circleLabelsGroup.call(toolTip);
 
@@ -132,7 +133,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     data.people_fully_vaccinated = +data.people_fully_vaccinated;
         
   });
-  console.log(stateData);
+  // console.log(stateData);
 
   // xLinearScale function above csv import
   var xLinearScale = xScale(stateData, chosenXAxis);
@@ -160,29 +161,23 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .call(leftAxis);
 
   // append initial circles
-  var circlesGroup = chartGroup.selectAll("circle")
+  var circlesGroup = chartGroup.append("g")
+    .selectAll(".stateCircle")
     .data(stateData)
     .enter()
     .append("circle")
+    .attr("class", "stateCircle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.new_weekly_cases_per_100k))
     .attr("r", 20)
     .attr("fill", "pink")
     .attr("opacity", ".5");
 
-  // console.log("circlesGroup has: ", circlesGroup)
-    
-  //  // append initial labels
-  // var circleLabelsGroup = chartGroup.selectAll("text")
-  // .data(stateData)
-  // .enter()
-  // .append("text")
-  // .attr("x", d => xLinearScale(d[chosenXAxis]))
-  // .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k))
-  // .text(d => d.state_code); 
-
+  console.log("circlesGroup has: ", circlesGroup)
+   
    // append initial labels
-   var circleLabelsGroup = chartGroup.selectAll(".stateText")
+   var circleLabelsGroup = chartGroup.append("g")
+   .selectAll(".stateText")
    .data(stateData)
    .enter()
    .append("text")
@@ -220,7 +215,12 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .text("New COVID-19 Cases in last Week (per 100k)");
 
   // // updateToolTip function above csv import
-  var circlesGroup = updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+  console.log("circlesGroup right before updateTooltip is executed has: ", circlesGroup);
+  console.log("circleLabelsGroup right before updateTooltip is executed has: ", circleLabelsGroup);
+  // var circlesGroup = updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+  updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+  console.log("circlesGroup right before x axis event listeners has: ", circlesGroup);
+  console.log("circleLabelsGroup right before x axis event listener is executed has: ", circleLabelsGroup);
  
 
   // // x axis labels event listener
@@ -233,7 +233,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
         // replaces chosenXAxis with value
         chosenXAxis = value;
 
-        // console.log(chosenXAxis)
+         console.log("New chosen axis is: ", chosenXAxis)
 
         // functions here found above csv import
         // updates x scale for new data
@@ -243,16 +243,21 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
+        console.log("circlesGroup entering renderCircles has: ", circlesGroup);
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
          // updates circle labels with new x values
+         console.log("circleLabelsGroup entering renderCircles has: ", circleLabelsGroup);
          circleLabelsGroup = renderCircleLabels(circleLabelsGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+        // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+         updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+         console.log("circleLabelsGroup immediately after executing updateTooltip has: ", circleLabelsGroup);
 
         // updates tooltips with new info
-        circleLabelsGroup = updateToolTip(chosenXAxis, circleLabelsGroup);
+       
+        // circleLabelsGroup = updateToolTip(chosenXAxis, circleLabelsGroup);
 
         // changes classes to change bold text
         if (chosenXAxis === "people_fully_vaccinated") {
