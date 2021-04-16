@@ -1,9 +1,3 @@
-// // original sizing
-// var svgWidth = 960;
-// var svgHeight = 500;
-
-// var svgWidth = 1100;
-// var svgHeight = 600;
 var svgWidth = 1100;
 var svgHeight = 550;
 
@@ -41,8 +35,7 @@ function xScale(stateData, chosenXAxis) {
     ])
     .range([0, width]);
     max_xvalue = d3.max(stateData, d => d[chosenXAxis]);
-    console.log("Max X value should be: ", max_xvalue);
-
+  
   return xLinearScale;
 
 }
@@ -58,8 +51,7 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 
-// function used for updating circles group with a transition to
-// new circles
+// function used for updating circles group with a transition to new circles
 function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
@@ -69,8 +61,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
   return circlesGroup;
 }
 
-// function used for updating circle labels group with a transition to
-// new circles
+// function used for updating circle labels group with a transition to new circles
 function renderCircleLabels(circleLabelsGroup, newXScale, chosenXAxis) {
 
   circleLabelsGroup.transition()
@@ -80,31 +71,29 @@ function renderCircleLabels(circleLabelsGroup, newXScale, chosenXAxis) {
   return circleLabelsGroup;
 }
 
-// function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup,yAxisValue) {
-  console.log("yAxisValue entering updateTooltip: ", yAxisValue);
+// function used for updating chartGroup (contains both circlesGroup and circleLabeslsGroup) group with new tooltip
+function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
 
   var label;
+  var label2 = `New weekly cases: `;
 
   if (chosenXAxis === "people_fully_vaccinated_per_hundred") {
-    label = (`People Vaccinated <br> (per 100) <br>`);
+    label = (`% fully vaccinated: `);
     // label = "People Vaccinated (per 100)";
   }
   else {
-    label = "People Vaccinated";
+    label = "People Fully Vaccinated: ";
   }
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.state}<br>${label} ${d[chosenXAxis]} ${yAxisValue}`);
+      return (`<b>${d.state}</b><br>${label2} ${d.new_weekly_cases_per_100k}<br> ${label} ${d[chosenXAxis]} `);
     });
-  console.log("circleLabelsGroup before .call(toolTip: ", circleLabelsGroup); 
-  console.log("circlesGroup before .call(toolTip: ", circlesGroup);  
-  circlesGroup.call(toolTip);
-  circleLabelsGroup.call(toolTip);
-
+ 
+  chartGroup.call(toolTip);
+ 
   circlesGroup.on("mouseover", function(data) {
     toolTip.show(data);
   })
@@ -113,9 +102,7 @@ function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup,yAxisValue) 
       toolTip.hide(data);
     });
 
-    // return (circlesGroup)
-
-  circleLabelsGroup.on("mouseover", function(data) {
+     circleLabelsGroup.on("mouseover", function(data) {
     toolTip.show(data);
   })
     // onmouseout event
@@ -123,11 +110,10 @@ function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup,yAxisValue) 
       toolTip.hide(data);
     });
 
-  // return (circleLabelsGroup);
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("state_stats.csv").then(function(stateData, err) {
+d3.csv("assets/data/state_stats.csv").then(function(stateData, err) {
   if (err) throw err;
 
   // parse data
@@ -137,7 +123,6 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     data.people_fully_vaccinated = +data.people_fully_vaccinated;
         
   });
-  // console.log(stateData);
 
   // xLinearScale function above csv import
   var xLinearScale = xScale(stateData, chosenXAxis);
@@ -148,8 +133,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .range([height, 0]);
 
   max_yvalue = d3.max(stateData, d => d.new_weekly_cases_per_100k);
-  console.log("Max y value should be: ", max_yvalue);
-
+ 
     // Create initial axis functions
   var bottomAxis = d3.axisBottom(xLinearScale);
   var leftAxis = d3.axisLeft(yLinearScale);
@@ -174,11 +158,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.new_weekly_cases_per_100k))
     .attr("r", 18);
-    // .attr("fill", "pink")
-    // .attr("opacity", ".5");
 
-  console.log("Upon creation circlesGroup has: ", circlesGroup)
-   
    // append initial labels
    var circleLabelsGroup = chartGroup.append("g")
    .selectAll(".stateText")
@@ -189,9 +169,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
    .attr("x", d => xLinearScale(d[chosenXAxis]))
    .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k) + 4)
    .text(d => d.state_code); 
-
-  console.log("Upon creation circleLabelsGroup has: ", circleLabelsGroup);
-  
+ 
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -218,19 +196,9 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     .classed("axis-text", true)
     .text("New COVID-19 Cases this Week (per 100k)");
 
-  // // updateToolTip function above csv import
-  console.log("circlesGroup right before updateTooltip is executed has: ", circlesGroup);
-  console.log("circleLabelsGroup right before updateTooltip is executed has: ", circleLabelsGroup);
-  // var circlesGroup = updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
-
-  var yAxisValue = (d => d.new_weekly_cases_per_100k);
+  // updateToolTip function above csv import
+  updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
  
-  console.log("yAxisValue before calling updateTooltip:", yAxisValue);
-  updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup, yAxisValue);
-  console.log("circlesGroup right before x axis event listeners has: ", circlesGroup);
-  console.log("circleLabelsGroup right before x axis event listener is executed has: ", circleLabelsGroup);
- 
-
   // // x axis labels event listener
   labelsGroup.selectAll("text")
     .on("click", function() {
@@ -240,9 +208,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
 
         // replaces chosenXAxis with value
         chosenXAxis = value;
-
-         console.log("New chosen axis is: ", chosenXAxis)
-
+        
         // functions here found above csv import
         // updates x scale for new data
         xLinearScale = xScale(stateData, chosenXAxis);
@@ -251,23 +217,14 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        console.log("circlesGroup entering renderCircles has: ", circlesGroup);
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
          // updates circle labels with new x values
-         console.log("circleLabelsGroup entering renderCircles has: ", circleLabelsGroup);
-         circleLabelsGroup = renderCircleLabels(circleLabelsGroup, xLinearScale, chosenXAxis);
+        circleLabelsGroup = renderCircleLabels(circleLabelsGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
-        // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
-        var yAxisValue = stateData.new_weekly_cases_per_100k;
-         updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup, yAxisValue);
-         console.log("circleLabelsGroup immediately after executing updateTooltip has: ", circleLabelsGroup);
-
-        // updates tooltips with new info
-       
-        // circleLabelsGroup = updateToolTip(chosenXAxis, circleLabelsGroup);
-
+        updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+        
         // changes classes to change bold text
         if (chosenXAxis === "people_fully_vaccinated") {
           vaxTotalLabel
