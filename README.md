@@ -7,13 +7,13 @@ Several different datasets were extracted & transformed to produce the dataset u
     - us-covid-number-fully-vaccinated.csv
     - us-covid-share-fully-vaccinated.csv
     - us-total-covid-19-vaccine-doses-administered.csv
-    us-state-covid-vaccines-per-100.csv
+    - us-state-covid-vaccines-per-100.csv
 
 - COVID Case data came from CDC's COVID Data Tracker at https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36
     - United_States_COVID_19_Cases_and_Deaths_by_State_over_Time.csv
 
 ## Dashboard
-The dashboard enables users to explore the COVID-19 cases & vaccinations data for the week ending April 10. They can toggle between different variables on the X axis to see how those variables relate to the recent COVID-19 infection rates for each state by clicking on "People Vaccinated (per 100)" or "People Vaccinated". Upon hovering over a state on the chart, a tooltips displays the values for the state.
+The dashboard enables users to explore the COVID-19 cases & vaccinations data for the week ending April 10. They can toggle between different variables on the X axis to see how those variables relate to the recent COVID-19 infection rates for each state by clicking on "People Vaccinated (per 100)" or "People Vaccinated". Upon hovering over a state on the chart, a tooltip displays the values for the state.
 The project findings are detailed below the chart.
   
 ## Project Artifacts
