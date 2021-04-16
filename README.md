@@ -1,6 +1,6 @@
 # D3-Challenge
 This project analyzes &amp; visualizes current COVID-19 vaccination and infection rates across the US to better understand state level trends. It uses Javascript, D3.js, D3-tip.js and HTML to build an interactive chart for exploring the relationship between COVID-19 infection rates and vaccination levels for each state in the US for the week ending April 10, 2021. 
-The interactive chart with findings can be accessed [here](https://mthorpester.github.io/biodiversity-challenge/ "My Biodiversity Dashboard").
+The interactive chart with findings can be accessed [here](https://mthorpester.github.io/D3-Challenge/D3_data_journalism/main.html "My Interactive D3 Scatter plot").
 ## Dataset
 Several different datasets were extracted & transformed to produce the dataset used for this project.
 -  Vaccination Data came from "Our World in Data" - (https://ourworldindata.org/us-states-vaccinations ):
@@ -27,4 +27,4 @@ All of the resources used to produce the dataset are in the Resources folder - i
 
 ## Getting Started
 
-To run this application simply launch the index.html file using live server or visit the hosted version [here](https://mthorpester.github.io/biodiversity-challenge/ "My Biodiversity Dashboard").
+To run this application simply launch the index.html file using live server or visit the hosted version [here](https://mthorpester.github.io/D3-Challenge/D3_data_journalism/main.html "My Interactive D3 Scatter plot").
