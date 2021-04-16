@@ -81,7 +81,8 @@ function renderCircleLabels(circleLabelsGroup, newXScale, chosenXAxis) {
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
+function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup,yAxisValue) {
+  console.log("yAxisValue entering updateTooltip: ", yAxisValue);
 
   var label;
 
@@ -97,7 +98,7 @@ function updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup) {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
+      return (`${d.state}<br>${label} ${d[chosenXAxis]} ${yAxisValue}`);
     });
   console.log("circleLabelsGroup before .call(toolTip: ", circleLabelsGroup); 
   console.log("circlesGroup before .call(toolTip: ", circlesGroup);  
@@ -176,7 +177,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
     // .attr("fill", "pink")
     // .attr("opacity", ".5");
 
-  console.log("circlesGroup has: ", circlesGroup)
+  console.log("Upon creation circlesGroup has: ", circlesGroup)
    
    // append initial labels
    var circleLabelsGroup = chartGroup.append("g")
@@ -189,7 +190,7 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
    .attr("y", d => yLinearScale(d.new_weekly_cases_per_100k) + 4)
    .text(d => d.state_code); 
 
- // console.log("circleLabelsGroup has: ", circleLabelsGroup);
+  console.log("Upon creation circleLabelsGroup has: ", circleLabelsGroup);
   
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
@@ -221,7 +222,11 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
   console.log("circlesGroup right before updateTooltip is executed has: ", circlesGroup);
   console.log("circleLabelsGroup right before updateTooltip is executed has: ", circleLabelsGroup);
   // var circlesGroup = updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
-  updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+
+  var yAxisValue = (d => d.new_weekly_cases_per_100k);
+ 
+  console.log("yAxisValue before calling updateTooltip:", yAxisValue);
+  updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup, yAxisValue);
   console.log("circlesGroup right before x axis event listeners has: ", circlesGroup);
   console.log("circleLabelsGroup right before x axis event listener is executed has: ", circleLabelsGroup);
  
@@ -255,7 +260,8 @@ d3.csv("state_stats.csv").then(function(stateData, err) {
 
         // updates tooltips with new info
         // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
-         updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup);
+        var yAxisValue = stateData.new_weekly_cases_per_100k;
+         updateToolTip(chosenXAxis, circlesGroup, circleLabelsGroup, yAxisValue);
          console.log("circleLabelsGroup immediately after executing updateTooltip has: ", circleLabelsGroup);
 
         // updates tooltips with new info
