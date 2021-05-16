@@ -172,7 +172,7 @@ function Responsify() {
       .attr("class", "stateCircle")
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
       .attr("cy", d => yLinearScale(d.new_weekly_cases_per_100k))
-      .attr("r", 18);
+      .attr("r", 14);
 
     // append initial labels
     var circleLabelsGroup = chartGroup.append("g")
